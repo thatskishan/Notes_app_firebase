@@ -94,15 +94,45 @@ class _NotesScreenState extends State<NotesScreen> {
                             ),
                           ),
                           IconButton(
-                            onPressed: () async {
-                              await FirestoreHelper.firestoreHelper
-                                  .deleteRecord(id: allDocs[i].id);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content:
-                                      Text("Record Deleted Successfully..."),
-                                  backgroundColor: Colors.redAccent,
-                                  behavior: SnackBarBehavior.floating,
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text(
+                                    'Are you sure to delete this note?',
+                                    style: GoogleFonts.poppins(),
+                                  ),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: Text(
+                                        'Yes',
+                                        style: GoogleFonts.poppins(),
+                                      ),
+                                      onPressed: () async {
+                                        await FirestoreHelper.firestoreHelper
+                                            .deleteRecord(id: allDocs[i].id);
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                                "Record Deleted Successfully..."),
+                                            backgroundColor: Colors.redAccent,
+                                            behavior: SnackBarBehavior.floating,
+                                          ),
+                                        );
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: Text(
+                                        'No',
+                                        style: GoogleFonts.poppins(),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
                                 ),
                               );
                             },
@@ -224,7 +254,7 @@ class _NotesScreenState extends State<NotesScreen> {
               }
             },
             child: Text(
-              "Add",
+              "Update",
               style: GoogleFonts.poppins(),
             ),
           ),
